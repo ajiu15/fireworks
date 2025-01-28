@@ -3,108 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ÑÌ»¨ÕÀ·ÅÈËÏñĞ§¹û</title>
+  <title>çƒŸèŠ±ç»½æ”¾äººåƒæ•ˆæœ</title>
   <style>
     body {
       margin: 0;
       overflow: hidden;
-const canvas = document.getElementById('fireworksCanvas');
-const ctx = canvas.getContext('2d');
-const particles = [];
-const numParticles = 500; // ¿ØÖÆÑÌ»¨Á£×ÓµÄÊıÁ¿
-// ÉèÖÃ»­²¼³ß´ç
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-// ¼ÓÔØÈËÏñÍ¼Ïñ
-const image = new Image();
-image.src = 'your-image.jpg';  // Ìæ»»ÎªÄãµÄÈËÏñÍ¼Æ¬Â·¾¶
-image.onload = function () {
-  createFireworks();
-};
-// ´´½¨ÑÌ»¨Ğ§¹û
-function createFireworks() {
-  // ÕÀ·ÅÖĞĞÄµã
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-  // Éú³É¶àÖÖÑÌ»¨Ğ§¹ûµÄÁ£×Ó
-  for (let i = 0; i < numParticles; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = Math.random() * 4 + 2;
-    const particleEffect = getParticleEffect();
-    const color = getColorFromImage(centerX, centerY);
-    particles.push(new Particle(centerX, centerY, angle, speed, color, particleEffect));
-  }
-  animate();
-}
-// ´´½¨²»Í¬ÖÖÀàµÄÑÌ»¨Á£×ÓĞ§¹û
-function getParticleEffect() {
-  const effects = ['circle', 'star', 'line'];
-  return effects[Math.floor(Math.random() * effects.length)];
-}
-// »æÖÆÑÌ»¨Á£×Ó
-function Particle(x, y, angle, speed, color, effect) {
-  this.x = x;
-  this.y = y;
-  this.angle = angle;
-  this.speed = speed;
-  this.color = color;
-  this.effect = effect;
-  this.life = 0;
-  this.maxLife = 60 + Math.random() * 100;
-  this.update = function () {
-    this.life++;
-    this.x += Math.cos(this.angle) * this.speed;
-    this.y += Math.sin(this.angle) * this.speed;
-    this.speed *= 0.98; // Ä£Äâ¿ÕÆø×èÁ¦
-  };
-  this.draw = function () {
-    ctx.beginPath();
-    
-    if (this.effect === 'circle') {
-      ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-    } else if (this.effect === 'star') {
-      for (let i = 0; i < 5; i++) {
-        const angleOffset = i * Math.PI / 2.5;
-        ctx.lineTo(this.x + Math.cos(angleOffset) * 5, this.y + Math.sin(angleOffset) * 5);
-      }
-    } else if (this.effect === 'line') {
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x + Math.cos(this.angle) * 5, this.y + Math.sin(this.angle) * 5);
     }
     canvas {
       position: absolute;
       top: 0;
       left: 0;
-    ctx.closePath();
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  };
-}
-// »ñÈ¡ÈËÏñÑÕÉ«£¨È¡Í¼ÏñÖĞĞÄÎ»ÖÃµÄÑÕÉ«£©
-function getColorFromImage(x, y) {
-  const pixel = ctx.getImageData(x, y, 1, 1).data;
-  return `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
-}
-// ¶¯»­º¯Êı
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // »æÖÆÈËÏñÍ¼Ïñ
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-  // ¸üĞÂ²¢»æÖÆËùÓĞÑÌ»¨Á£×Ó
-  particles.forEach((particle, index) => {
-    if (particle.life > particle.maxLife) {
-      particles.splice(index, 1);  // É¾³ıÒÑÏûÊ§µÄÁ£×Ó
-    } else {
-      particle.update();
-      particle.draw();
     }
   </style>
 </head>
 <body>
   <canvas id="fireworksCanvas"></canvas>
-  <script src="fireworks.js"></script>
+
+  <script>
+    const canvas = document.getElementById('fireworksCanvas');
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    const numParticles = 500; // æ§åˆ¶çƒŸèŠ±ç²’å­çš„æ•°é‡
+
+    // è®¾ç½®ç”»å¸ƒå°ºå¯¸
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // åŠ è½½äººåƒå›¾åƒ
+    const image = new Image();
+    image.src = 'your-image.jpg';  // æ›¿æ¢ä¸ºä½ çš„äººåƒå›¾ç‰‡è·¯å¾„
+
+    image.onload = function () {
+      createFireworks();
+    };
+
+    // åˆ›å»ºçƒŸèŠ±æ•ˆæœ
+    function createFireworks() {
+      // ç»½æ”¾ä¸­å¿ƒç‚¹
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      // ç”Ÿæˆå¤šç§çƒŸèŠ±æ•ˆæœçš„ç²’å­
+      for (let i = 0; i < numParticles; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 4 + 2;
+        const particleEffect = getParticleEffect();
+        const color = getColorFromImage(centerX, centerY);
+        particles.push(new Particle(centerX, centerY, angle, speed, color, particleEffect));
+      }
+      animate();
+    }
+
+    // åˆ›å»ºä¸åŒç§ç±»çš„çƒŸèŠ±ç²’å­æ•ˆæœ
+    function getParticleEffect() {
+      const effects = ['circle', 'star', 'line'];
+      return effects[Math.floor(Math.random() * effects.length)];
+    }
+
+    // ç»˜åˆ¶çƒŸèŠ±ç²’å­
+    function Particle(x, y, angle, speed, color, effect) {
+      this.x = x;
+      this.y = y;
+      this.angle = angle;
+      this.speed = speed;
+      this.color = color;
+      this.effect = effect;
+      this.life = 0;
+      this.maxLife = 60 + Math.random() * 100;
+
+      this.update = function () {
+        this.life++;
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        this.speed *= 0.98; // æ¨¡æ‹Ÿç©ºæ°”é˜»åŠ›
+      };
+
+      this.draw = function () {
+        ctx.beginPath();
+
+        if (this.effect === 'circle') {
+          ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        } else if (this.effect === 'star') {
+          for (let i = 0; i < 5; i++) {
+            const angleOffset = i * Math.PI / 2.5;
+            ctx.lineTo(this.x + Math.cos(angleOffset) * 5, this.y + Math.sin(angleOffset) * 5);
+          }
+        } else if (this.effect === 'line') {
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(this.x + Math.cos(this.angle) * 5, this.y + Math.sin(this.angle) * 5);
+        }
+
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      };
+    }
+
+    // è·å–äººåƒé¢œè‰²ï¼ˆå–å›¾åƒä¸­å¿ƒä½ç½®çš„é¢œè‰²ï¼‰
+    function getColorFromImage(x, y) {
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+      return `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+    }
+
+    // åŠ¨ç”»å‡½æ•°
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // ç»˜åˆ¶äººåƒå›¾åƒ
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+      // æ›´æ–°å¹¶ç»˜åˆ¶æ‰€æœ‰çƒŸèŠ±ç²’å­
+      particles.forEach((particle, index) => {
+        if (particle.life > particle.maxLife) {
+          particles.splice(index, 1);  // åˆ é™¤å·²æ¶ˆå¤±çš„ç²’å­
+        } else {
+          particle.update();
+          particle.draw();
+        }
+      });
+
+      requestAnimationFrame(animate);
+    }
+  </script>
 </body>
 </html>
-  });
-  requestAnimationFrame(animate);
-}
